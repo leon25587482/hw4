@@ -1,0 +1,257 @@
+---
+author: "未命名 B01201001 一般系"
+title: "HW 4: List, Loop, and Data frame"
+date: | 
+  | 2021-03-18
+  |
+  | [Rmd Source (for TAs)](./index.Rmd){download='`r basename(getwd())`.Rmd'}
+output:
+  html_document:
+    number_sections: yes
+    highlight: tango
+    toc: yes
+    toc_float:
+      collapsed: no
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results = 'hold', comment = '#>', error = TRUE)
+```
+
+
+基本題 (共 100 分)
+=========================
+
+
+## Data frame (共 60 分)
+
+```{r}
+# 請勿更動此 code chunk
+library(tibble)
+df <- as_tibble(ToothGrowth)
+df
+```
+
+此題使用的是 R 的內建資料 `ToothGrowth`，請使用 `?ToothGrowth` 閱讀此資料集的說明，並使用上課講到的指令 (e.g. `dim()`, `glimpse()`, `View()`, ...) 幫助自己熟悉這份資料。
+
+
+### Subsetting I (20 分)
+
+請從 `df` 中 (1) 篩選出 `supp` 變項為 `VC` 的所有觀察值，並 (2) 只保留 `len` 與 `supp` 這兩個變項。
+
+```{r}
+# Write your code here
+
+# should print out:
+#> # A tibble: 30 x 2
+#>      len supp 
+#>    <dbl> <fct>
+#>  1   4.2 VC   
+#>  2  11.5 VC   
+#>  3   7.3 VC   
+#>  4   5.8 VC   
+#>  5   6.4 VC   
+#>  6  10   VC   
+#>  7  11.2 VC   
+#>  8  11.2 VC   
+#>  9   5.2 VC   
+#> 10   7   VC   
+#> # … with 20 more rows
+```
+
+
+### Subsetting II (20 分)
+
+請從 `df` 中篩選出 (1) `supp` 變項為 `VC` 且 (2) `len` 小於 25 的所有觀察值。
+
+```{r}
+# Write your code here
+
+# should print out:
+#> # A tibble: 24 x 3
+#>      len supp   dose
+#>    <dbl> <fct> <dbl>
+#>  1   4.2 VC      0.5
+#>  2  11.5 VC      0.5
+#>  3   7.3 VC      0.5
+#>  4   5.8 VC      0.5
+#>  5   6.4 VC      0.5
+#>  6  10   VC      0.5
+#>  7  11.2 VC      0.5
+#>  8  11.2 VC      0.5
+#>  9   5.2 VC      0.5
+#> 10   7   VC      0.5
+#> # … with 14 more rows
+```
+
+
+### Subsetting III (20 分)
+
+請從 `df` 中篩選出 `len + 15 * dose` 大於 40 的所有觀察值。
+
+```{r}
+# Write your code here
+
+# should print out:
+#> # A tibble: 24 x 3
+#>      len supp   dose
+#>    <dbl> <fct> <dbl>
+#>  1  23.6 VC        2
+#>  2  18.5 VC        2
+#>  3  33.9 VC        2
+#>  4  25.5 VC        2
+#>  5  26.4 VC        2
+#>  6  32.5 VC        2
+#>  7  26.7 VC        2
+#>  8  21.5 VC        2
+#>  9  23.3 VC        2
+#> 10  29.5 VC        2
+```
+
+
+## Modifying Values in Lists (共 40 分)
+
+下方的 `member` 是實習課使用過的例子。在這題，你的任務是撰寫一個函數 `n_years_later()` 用來將 `member` 裡面的成員增加或減少歲數。
+`n_years_later()` 有兩個參數：
+
+- `member_data`: list，傳入的 member 資料
+- `years`: integer, 要增加或減少的歲數
+
+`n_years_later()` 所回傳的資料跟原本傳入 `member_data` 參數的資料結構是一樣的，唯一的差別在於原本資料中的 `age` 會依據傳入 `years` 參數的值進行更新。
+
+
+提示：
+
+1. 修改 list 裡面元素的語法與 vector 類似：
+  
+    ```{r}
+    lst <- list(list(first = "Tiger"))
+    lst
+    
+    lst[[1]]$first <- "Pooh"
+    lst
+    ```
+
+2. 撰寫 `n_years_later()` 時，需要使用到 for 迴圈或是 `lapply()`，不可以一個一個修改
+
+
+```{r}
+# Data 
+member <- list(
+   list(name = "kai", age = 40),
+   list(name = "pooh", age = 20),
+   list(name = "tiger", age = 18),
+   list(name = "piglet", age = 19)
+)
+##### Do Not modify the code above #####
+
+n_years_later <- function(member_data, years) {
+  # Write your code here
+}
+
+
+##### Do Not modify the code below #####
+member[[5]] <- list(name = "Obama", age = 59)
+for (y in -1:1) {
+  lst = n_years_later(member, y)
+  print(sapply(lst, function(x) x$age))
+}
+# Should print out:
+#> [1] 39 19 17 18 58
+#> [1] 40 20 18 19 59
+#> [1] 41 21 19 20 60
+```
+
+
+進階選答題 (共 20 分)
+==========================
+
+1. 作業資料夾裡面有份 `week3Rclass.csv`，請將此份資料讀進 R 成為一個 data.frame，存入變數 `cute_cute`。(可以使用 R 內建函數或 `readr` 套件)
+   
+```{r}
+# Write your code here
+
+# Do not modify the code below
+cute_cute
+# Should print out
+#> # A tibble: 85 x 6
+#>    nickname   gender grade q_self q_teacher   GPA
+#>    <chr>       <dbl> <dbl>  <dbl>     <dbl> <dbl>
+#>  1 iakuhs          2     5     60        60  4.2 
+#>  2 ToMmyDong       1     1    100       100  5   
+#>  3 s               2     4     60        90  4   
+#>  4 Jhang           1     4     70        85  3.7 
+#>  5 Ryan            2     1     80        90  4.05
+#>  6 Ycyc            1     4    100        90  4.3 
+#>  7 Liuba           1     5     85        90  3.13
+#>  8 guest001        2     1     80        80  3.2 
+#>  9 WhaDaFuq        1     1     85        80  2.99
+#> 10 irenYujing      2     2     90        90  3.86
+#> # … with 75 more rows
+```
+   
+
+2. (不可以使用套件，e.g. `dplyr`、`data.table`)
+請修改以下 data frame 的資料：
+  - GPA：超過 4.3 為錯誤資料，請改為缺失值
+  - gender："M" 改為 1、"F" 改為2。其它的則改為 0。注意：gender 資料類型需為 `integer`。(Hint: 注意 gender 原本的資料類型是沒有教過的 factor)
+
+```{r}
+# Data 
+Q_Q = data.frame(
+  nickname = c('SeanN', 'solid', 'wow', '87heng87', 'rox', 'Ycyc'),
+  gender = c("M", " F", "M", "F", "F", "Stone"),
+  grade = c(5, 5, 4, 4, 4, 2),
+  q_self = c(95, 98, 85, 86, 87, 78),
+  q_teacher = c(95, 98, 85, 86, 87, 87),
+  GPA = c(4.8, 4.3, 5.2, 5.5, 4.7, 3.8)
+)
+####### Do Not modify the code above #########
+
+# Write your code here
+
+
+# Do Not modify the code below
+Q_Q
+# Should print out
+#>   nickname gender grade q_self q_teacher GPA
+#> 1       Fu      2     5     95        95  NA
+#> 2     Fang      2     5     98        98 4.3
+#> 3      Mau      2     4     85        85  NA
+#> 4      Lin      2     4     86        86  NA
+#> 5      Ben      2     4     87        87  NA
+#> 6      Ber      2     2     78        87 3.8
+```
+
+3. (不可以使用套件，e.g. `dplyr`、`data.table`)
+請在 `cute_cute` 這個 data frame 裡新增一個 column `favorite_word` (不可以使用套件，e.g. `dplyr`、`data.table`)。在 `favorite_word` 中：
+  - 若 `q_self` 大於等於 70，`favorite_word` 的值為 `"根本可愛動物區"`
+  - 若 `q_self` 小於 70，`favorite_word` 的值為 `"一代一代"`
+
+  
+```{r}
+# Write your code here
+
+# Do not modify the code below
+cute_cute
+# Should print out
+#> # A tibble: 85 x 7
+#>    nickname   gender grade q_self q_teacher   GPA favorite_word 
+#>    <chr>       <dbl> <dbl>  <dbl>     <dbl> <dbl> <chr>         
+#>  1 iakuhs          2     5     60        60  4.2  一代一代      
+#>  2 ToMmyDong       1     1    100       100  5    根本可愛動物區
+#>  3 s               2     4     60        90  4    一代一代      
+#>  4 Jhang           1     4     70        85  3.7  根本可愛動物區
+#>  5 Ryan            2     1     80        90  4.05 根本可愛動物區
+#>  6 Ycyc            1     4    100        90  4.3  根本可愛動物區
+#>  7 Liuba           1     5     85        90  3.13 根本可愛動物區
+#>  8 guest001        2     1     80        80  3.2  根本可愛動物區
+#>  9 WhaDaFuq        1     1     85        80  2.99 根本可愛動物區
+#> 10 irenYujing      2     2     90        90  3.86 根本可愛動物區
+#> # … with 75 more rows
+```
+
+  
+  
+  
