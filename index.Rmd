@@ -216,12 +216,12 @@ Q_Q = data.frame(
 Q_Q
 # Should print out
 #>   nickname gender grade q_self q_teacher GPA
-#> 1       Fu      2     5     95        95  NA
-#> 2     Fang      2     5     98        98 4.3
-#> 3      Mau      2     4     85        85  NA
-#> 4      Lin      2     4     86        86  NA
-#> 5      Ben      2     4     87        87  NA
-#> 6      Ber      2     2     78        87 3.8
+#> 1    SeanN      2     5     95        95  NA
+#> 2    solid      2     5     98        98 4.3
+#> 3      wow      2     4     85        85  NA
+#> 4 87heng87      2     4     86        86  NA
+#> 5      rox      2     4     87        87  NA
+#> 6     Ycyc      2     2     78        87 3.8
 ```
 
 3. (不可以使用套件，e.g. `dplyr`、`data.table`)
